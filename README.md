@@ -44,7 +44,7 @@ EOF
 ```
 
 ## Wiring up the Raspberry Pi
-1. Disassemble the keyboard.  Pull the tab, g, h, \, ←, ↓, space bar, control and windows keycaps and remove the screws underneath.  Remove the board from it's case and flip it over, keys down.
+1. Disassemble the keyboard.  Pull the tab, g, h, \\, ←, ↓, space bar, control and windows keycaps and remove the screws underneath.  Remove the board from it's case and flip it over, keys down.
 2. Connect the rpi GPIO pins to their corresponding thruholes on the tada68.  I used an old PATA hard drive cable I had laying around, but whatever works.
 
 ![tada68](images/tada68.jpg?raw=true)
@@ -53,3 +53,21 @@ EOF
 
 
 ## Flash!
+1. Make sure everything is correct:
+```
+$ sudo avrdude -p atmega32u4 -C tada68-bootloader-restore/avrdude_gpio.conf -c pi_1 -v
+[...]
+avrdude: AVR device initialized and ready to accept instructions
+[...]
+$ 
+```
+If you don't see "ready to accept instructions", double check your wiring.
+
+2. Flash!
+```
+$ sudo avrdude -p atmega32u4 -C tada68-bootloader-restore/avrdude_gpio.conf \
+> -c pi_1 -v -U flash:w:tada68-bootloader-restore/mass_bootloader_tada68.hex
+```
+
+## Fin.
+Once it's done, all the wires can be disconnected. The keyboard can now be plug with USB into a PC and will work like out of the box!
